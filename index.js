@@ -3,23 +3,27 @@ const graphqlHTTP = require('express-graphql');
 
 const { makeExecutableSchema } = require('graphql-tools');
 
-const {tickets} = require('./connector');
+const {ticket, tickets} = require('./connector');
 
 const typeDefs = `
 
     type Ticket {
-        id: Int
+        _id: String
         text: String
     }
 
     type Query {
         tickets: [Ticket]
+        ticket(_id: String): Ticket
     }
 `
 const resolvers = {
     Query : {
         tickets: () => {
             return tickets()
+        },
+        ticket: (_, args) => {
+            return ticket(args._id)
         }
     }
 }

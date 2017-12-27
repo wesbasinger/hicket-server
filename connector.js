@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectID } = require('mongodb');
 
 const URI = 'mongodb://admin:1@ds163656.mlab.com:63656/hicket'
 
@@ -34,6 +34,21 @@ module.exports = {
                     coll.find({}).toArray( (err, docs) => {
                         if(!err) {
                             resolve(docs)
+                        } else {
+                            reject(err)
+                        }
+                    })
+                })
+            })
+        })
+    },
+    ticket: (objectId) => {
+        return new Promise( (resolve, reject) => {
+            getClient(URI).then( (client) => {
+                getCollection(client, 'hicket', 'tickets').then( (coll) => {
+                    coll.findOne({_id: ObjectID.createFromHexString(objectId)}, (err, doc) => {
+                        if (!err) {
+                            resolve(doc)
                         } else {
                             reject(err)
                         }
