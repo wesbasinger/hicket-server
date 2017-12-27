@@ -3,6 +3,8 @@ const graphqlHTTP = require('express-graphql');
 
 const { makeExecutableSchema } = require('graphql-tools');
 
+const {tickets} = require('./connector');
+
 const typeDefs = `
 
     type Ticket {
@@ -11,12 +13,15 @@ const typeDefs = `
     }
 
     type Query {
-        ticket(id:Int) : Ticket
         tickets: [Ticket]
     }
 `
 const resolvers = {
-    
+    Query : {
+        tickets: () => {
+            return tickets()
+        }
+    }
 }
 
 
