@@ -3,7 +3,7 @@ const graphqlHTTP = require('express-graphql');
 
 const { makeExecutableSchema } = require('graphql-tools');
 
-const {ticket, tickets} = require('./connector');
+const {add, ticket, tickets} = require('./connector');
 
 const typeDefs = `
 
@@ -16,6 +16,10 @@ const typeDefs = `
         tickets: [Ticket]
         ticket(_id: String): Ticket
     }
+    
+    type Mutation {
+        add(text: String): Ticket
+    }
 `
 const resolvers = {
     Query : {
@@ -24,6 +28,11 @@ const resolvers = {
         },
         ticket: (_, args) => {
             return ticket(args._id)
+        }
+    }, 
+    Mutation: {
+        add: (_, args) => {
+            return add(args.text)
         }
     }
 }

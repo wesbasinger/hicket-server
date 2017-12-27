@@ -41,5 +41,18 @@ module.exports = {
                 })
             })
         })
+    },
+    add: (text) => {
+        return new Promise( (resolve, reject) => {
+            getCollection(URI).then( (coll) => {
+                coll.insertOne({text: text}, (err, result) => {
+                    if(!err) {
+                        resolve({_id: result.insertedId, text: text})
+                    } else {
+                        reject(err)
+                    }
+                })
+            })
+        })
     }
 }
